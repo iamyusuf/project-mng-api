@@ -36,7 +36,7 @@ class ProjectController extends Controller
         $project->name = $request->name;
         $project->details = $request->details;
         $project->save();
-        
+
         return response()->json($project);
     }
 }

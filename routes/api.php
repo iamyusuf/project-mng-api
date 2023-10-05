@@ -17,9 +17,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('login', [AuthController::class, 'login']);
 
-Route::get('projects', [\App\Http\Controllers\ProjectController::class, 'projects']);
-Route::post('projects', [\App\Http\Controllers\ProjectController::class, 'store']);
-Route::put('projects/{project}', [\App\Http\Controllers\ProjectController::class, 'update']);
+Route::middleware(['auth:sanctum'])->group(function() {
+    Route::get('projects', [\App\Http\Controllers\ProjectController::class, 'projects']);
+    Route::post('projects', [\App\Http\Controllers\ProjectController::class, 'store']);
+    Route::put('projects/{project}', [\App\Http\Controllers\ProjectController::class, 'update']);
+});
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();

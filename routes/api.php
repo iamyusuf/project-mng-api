@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\StoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,8 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::get('projects', [\App\Http\Controllers\ProjectController::class, 'projects']);
     Route::post('projects', [\App\Http\Controllers\ProjectController::class, 'store']);
     Route::put('projects/{project}', [\App\Http\Controllers\ProjectController::class, 'update']);
+
+    Route::post('{project}/stories', [StoryController::class, 'create']);
 });
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {

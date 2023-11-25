@@ -13,14 +13,15 @@ class AuthController extends Controller
 
         $request->validate([
             'email' => 'required',
-            'password' => 'required'
+            'password' => 'required',
+            'remember_me' => 'nullable|number'
         ]);
 
         if (!Auth::attempt(request(['email', 'password']))) {
             return response()->json([
                 'message' => 'Unauthorized!'
             ], 401);
-        }        
+        }
 
         return response()->json([
             'accessToken' => $tokenService->generate($request),

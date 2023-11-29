@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,6 +21,10 @@ Route::get('/cache', function () {
 
 Route::get('/', function () {
     return ['Laravel' => app()->version()];
+});
+
+Route::get('/files', function () {
+    return (new \App\Services\ReleaseService)->get();
 });
 
 require __DIR__.'/auth.php';

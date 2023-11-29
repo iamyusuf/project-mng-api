@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\ReleaseService;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->registerReleasesForMigrations();
     }
 
     /**
@@ -20,5 +22,18 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+    }
+
+    /**
+     * It registers the release directories for
+     * migrations
+     * @return void
+     */
+    private function registerReleasesForMigrations(): void
+    {
+        $releases = (new ReleaseService)->get();
+        $this->loadMigrationsFrom(array_map(function ($release) {
+            return database_path('migrations/' . $release);
+        },$releases));
     }
 }

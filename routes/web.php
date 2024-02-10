@@ -1,7 +1,7 @@
 <?php
 
+use App\Classes\Registry;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,9 +19,7 @@ Route::get('/cache', function () {
    return Cache::get('key');
 });
 
-Route::get('/', function () {
-    return ['Laravel' => app()->version()];
-});
+Route::get('/', [\App\Http\Controllers\HomeController::class, 'index']);
 
 Route::get('/files', function () {
     return (new \App\Services\ReleaseService)->get();

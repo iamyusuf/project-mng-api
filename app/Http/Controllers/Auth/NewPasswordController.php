@@ -21,33 +21,73 @@ class NewPasswordController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $request->validate([
-            'token' => ['required'],
-            'email' => ['required', 'email'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+        $this->validateResetPasswordRequest($request);
+        $credentials = $request->only(['email', 'password', 'password_confirmation', 'token']);
 
-        // Here we will attempt to reset the user's password. If it is successful we
-        // will update the password on an actual user model and persist it to the
-        // database. Otherwise we will parse the error and return the response.
-        $status = Password::reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user) use ($request) {
-                $user->forceFill([
-                    'password' => Hash::make($request->password),
-                    'remember_token' => Str::random(60),
-                ])->save();
+        $status = $this->resetPassword($credentials);
+        $this->throwErrorIfNotReset($status);
 
+        return response()->json(['status' => __($status)]);
+    }
+
+    /**
+     * @param array $credentials
+     * @return mixed
+     */
+    private function resetPassword(array $credentials): mixed
+    {
+        $password = $credentials->password;
+
+        return Password::reset(
+            $credentials,
+            function ($user) use ($password) {
+                $this->updateUserPassword($user, $password);
                 event(new PasswordReset($user));
             }
         );
+    }
 
+    /**
+     * @param Request $request
+     * @return void
+     */
+    private function validateResetPasswordRequest(Request $request): void
+    {
+        $request->validate([
+            'token' => ['required'],
+            'email' => ['required', 'email'],
+            'password' => [
+                'required',
+                'confirmed',
+                Rules\Password::defaults()
+            ],
+        ]);
+    }
+
+    /**
+     * @param $user
+     * @param $password
+     * @return void
+     */
+    function updateUserPassword($user, $password): void
+    {
+        $user->forceFill([
+            'password' => Hash::make($password),
+            'remember_token' => Str::random(60),
+        ])->save();
+    }
+
+    /**
+     * @param mixed $status
+     * @return void
+     * @throws ValidationException
+     */
+    public function throwErrorIfNotReset(mixed $status): void
+    {
         if ($status != Password::PASSWORD_RESET) {
             throw ValidationException::withMessages([
                 'email' => [__($status)],
             ]);
         }
-
-        return response()->json(['status' => __($status)]);
     }
 }

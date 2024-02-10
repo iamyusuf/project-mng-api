@@ -20,7 +20,6 @@ class ProjectController extends Controller
             'name' => 'required'
         ]);
 
-
         $project = new Project;
         $project->name = $request->name;
         $project->details = $request->details;
@@ -30,7 +29,7 @@ class ProjectController extends Controller
     }
 
 
-    public function update(Project $project, Request $request)
+    public function update(Project $project, Request $request): JsonResponse
     {
         $request->validate(['name' => 'required']);
 

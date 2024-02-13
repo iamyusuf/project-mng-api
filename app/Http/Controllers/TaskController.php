@@ -47,7 +47,11 @@ class TaskController extends Controller
 
     private function addTaskFilters(Builder $query, Request $request)
     {
-        $queryableFields = ['project_id', 'epic_id', 'story_id'];
+        $queryableFields = [
+            'project_id',
+            'epic_id',
+            'story_id'
+        ];
 
         foreach ($queryableFields as $field) {
             $query->where($request->has($field), function ($q) use ($request, $field) {

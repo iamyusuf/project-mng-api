@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name', 255);
             $table->text('description')->nullable();
-            $table->unsignedBigInteger('project_id')->index();
-            $table->unsignedBigInteger('epic_id')->index();
-            $table->unsignedBigInteger('story_id')->index();
+            $table->unsignedBigInteger('project_id')->index()->nullable();
+            $table->unsignedBigInteger('epic_id')->index()->nullable();
+            $table->unsignedBigInteger('story_id')->index()->nullable();
             $table->unsignedTinyInteger('status')
                 ->index()
                 ->default(0)

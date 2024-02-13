@@ -12,7 +12,7 @@ class TaskRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return auth()->check();
     }
 
     /**
@@ -23,7 +23,7 @@ class TaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|max:255',
+            'name' => 'required|max:255',
             'description' => 'nullable',
             'project_id' => 'nullable',
             'epic_id' => 'nullable',

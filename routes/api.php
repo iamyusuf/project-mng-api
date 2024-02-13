@@ -28,6 +28,8 @@ Route::middleware(['auth:sanctum'])->group(function() {
     Route::put('projects/{project}', [\App\Http\Controllers\ProjectController::class, 'update']);
 
     Route::post('{project}/stories', [StoryController::class, 'create']);
+
+    Route::resource('tasks', \App\Http\Controllers\TaskController::class);
 });
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {

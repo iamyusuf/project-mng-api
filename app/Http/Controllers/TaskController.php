@@ -19,7 +19,7 @@ class TaskController extends Controller
         return response()->json($data);
     }
 
-    public function create(TaskRequest $request)
+    public function store(TaskRequest $request)
     {
         $task = new Task($request->all());
         $task->save();
@@ -41,7 +41,7 @@ class TaskController extends Controller
         return response()->json(['id' => $id], Response::HTTP_NO_CONTENT);
     }
 
-    public function view(Task $task)
+    public function show(Task $task)
     {
         return response()->json($task);
     }

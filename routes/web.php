@@ -20,6 +20,12 @@ Route::get('/cache', function () {
 });
 
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index']);
+Route::get('/match', [\App\Http\Controllers\HomeController::class, 'matches']);
+Route::get('/fiber', [\App\Http\Controllers\HomeController::class, 'fiber']);
+Route::get('/reflect', [\App\Http\Controllers\HomeController::class, 'reflect']);
+Route::get('/reflect-class', [\App\Http\Controllers\HomeController::class, 'reflectClass']);
+Route::get('/soap', [\App\Http\Controllers\HomeController::class, 'soapApi']);
+Route::get('/users', [\App\Http\Controllers\HomeController::class, 'users']);
 
 Route::get('/files', function () {
     return (new \App\Services\ReleaseService)->get();

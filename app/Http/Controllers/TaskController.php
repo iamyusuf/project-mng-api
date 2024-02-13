@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskRequest;
 use App\Models\Task;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class TaskController extends Controller
         return response()->json($data);
     }
 
-    public function create(Request $request)
+    public function create(TaskRequest $request)
     {
         $task = new Task($request->all());
         $task->save();
